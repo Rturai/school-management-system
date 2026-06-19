@@ -7,25 +7,15 @@ import studentRoutes from "./routes/studentRoutes.js";
 import teacherRoutes from "./routes/teacherRoutes.js";
 import classRoutes from "./routes/classRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
-import enrollmentRoutes  from "./routes/enrollmentRoutes.js";
+import enrollmentRoutes from "./routes/enrollmentRoutes.js";
 
 dotenv.config();
 const app = express();
 
-// 💡 Vercel domain ko explicitly allow karne ke liye configuration
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'https://school-management-system-ivory-three.vercel.app' // Aapka live frontend domain
-  ],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// Pre-flight requests (OPTIONS) ko handle karne ke liye
+// ✅ CORS Problem ko permanently khatam karne ke liye bilkul clean wildcard setup
+app.use(cors({ origin: '*' }));
 app.options('*', cors());
+
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
