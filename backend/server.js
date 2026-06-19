@@ -12,7 +12,20 @@ import enrollmentRoutes  from "./routes/enrollmentRoutes.js";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+// 💡 Vercel domain ko explicitly allow karne ke liye configuration
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://school-management-system-ivory-three.vercel.app' // Aapka live frontend domain
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Pre-flight requests (OPTIONS) ko handle karne ke liye
+app.options('*', cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
