@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MainLayout from "../layouts/MainLayout";
-
+import API from "./api";
 const Students = () => {
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -25,7 +25,7 @@ const Students = () => {
   // 1. Fetch Students from Backend API on Component Mount
   const fetchStudents = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/students");
+     const response = await API.get("/students");
       setStudents(response.data);
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -60,10 +60,10 @@ const Students = () => {
 
     try {
       if (isEditing) {
-        await axios.put(`http://localhost:5000/api/students?id=${editId}`, formData);
+        await API.put(`/students?id=${editId}`, formData);
         alert("Student updated successfully!");
       } else {
-        await axios.post("http://localhost:5000/api/students", formData);
+        await API.post("/students", formData);
         alert("Student registered successfully!");
       }
       
@@ -79,7 +79,7 @@ const Students = () => {
   const deleteStudent = async (id) => {
     if (window.confirm("Are you sure you want to delete this student permanently?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/students?id=${id}`);
+        await API.delete(`/students?id=${id}`);
         fetchStudents();
       } catch (error) {
         console.error("Error deleting student:", error);
