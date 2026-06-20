@@ -4,6 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 // Graphs ke liye recharts ke components
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, PieChart, Pie, Cell } from "recharts";
 import { FaUserGraduate, FaChalkboardTeacher, FaSchool, FaCheckCircle, FaUserPlus } from "react-icons/fa";
+import API from "../api";
 
 const Dashboard = () => {
   const [stats, setStats] = useState({ totalStudents: 0, totalTeachers: 0, totalClasses: 0 });
@@ -14,7 +15,7 @@ const Dashboard = () => {
   const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ec4899', '#3b82f6'];
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/dashboard/stats")
+   API.get("/dashboard/stats")
       .then((res) => {
         // 1. Live Counters Data set hua
         setStats({

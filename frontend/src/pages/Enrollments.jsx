@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaUserPlus, FaUser, FaGraduationCap, FaCheckCircle, FaTimes, FaCalendarAlt, FaPhoneAlt, FaMapMarkerAlt, FaPrint } from 'react-icons/fa';
 import MainLayout from '../layouts/MainLayout'; 
-import axios from 'axios'; 
+import API from "../api";
 
 const Enrollment = () => {
   // Form input fields state
@@ -17,7 +17,7 @@ const Enrollment = () => {
 
   // Live data pull karne ka standard handler
   const fetchEnrollments = () => {
-    axios.get('http://localhost:5000/api/all-enrollments')
+    API.get('/all-enrollments')
       .then(res => {
         if (res.data && res.data.data) {
           setEnrollments(res.data.data);
@@ -45,7 +45,7 @@ const Enrollment = () => {
     e.preventDefault();
     setErrorMsg('');
     try {
-      const response = await axios.post('http://localhost:5000/api/enroll', formData);
+      API.post('/enroll', formData)
       if (response.data.success) {
         setSubmitted(true);
         // Form inputs khali karein

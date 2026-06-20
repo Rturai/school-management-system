@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+
 import MainLayout from "../layouts/MainLayout";
 import API from "./api";
 const Students = () => {

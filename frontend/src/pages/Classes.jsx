@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+
 import MainLayout from "../layouts/MainLayout";
+import API from "../api";
 
 const Classes = () => {
   const [classes, setClasses] = useState([]);
@@ -9,8 +10,8 @@ const Classes = () => {
   const [formData, setFormData] = useState({ className: "", section: "", roomNumber: "", teacherAssigned: "" });
 
   const fetchData = async () => {
-    const classRes = await axios.get("http://localhost:5000/api/classes");
-    const teacherRes = await axios.get("http://localhost:5000/api/teachers");
+   const classRes = await API.get("/classes");
+    const teacherRes = await API.get("/teachers");
     setClasses(classRes.data);
     setTeachers(teacherRes.data);
   };
@@ -19,7 +20,7 @@ const Classes = () => {
 
   const handleSubmit = async () => {
     if(!formData.className || !formData.section) return alert("Fill class name and section!");
-    await axios.post("http://localhost:5000/api/classes", formData);
+   await API.post("/classes", formData);
     fetchData();
     setShowModal(false);
     setFormData({ className: "", section: "", roomNumber: "", teacherAssigned: "" });
@@ -27,7 +28,7 @@ const Classes = () => {
 
   const handleDelete = async (id) => {
     if(window.confirm("Delete this class structure?")) {
-      await axios.delete(`http://localhost:5000/api/classes?id=${id}`);
+     await API.delete(`/classes?id=${id}`);
       fetchData();
     }
   };

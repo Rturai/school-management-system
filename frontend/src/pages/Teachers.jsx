@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../api";
 import MainLayout from "../layouts/MainLayout";
 
 const Teachers = () => {
@@ -17,7 +17,7 @@ const Teachers = () => {
   // 1. Fetch Teachers from Backend
   const fetchTeachers = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/teachers");
+      const res = await API.get("/teachers");
       setTeachers(res.data);
     } catch (error) {
       console.error("Error fetching teachers:", error);
@@ -45,7 +45,7 @@ const Teachers = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/teachers", formData);
+      await API.post("/teachers", formData);
       alert("Teacher registered successfully!");
       fetchTeachers(); // Refresh table & dynamic dashboard stats
       closeModal();
@@ -60,7 +60,7 @@ const Teachers = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this teacher permanently?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/teachers?id=${id}`);
+        await API.delete(`/teachers?id=${id}`);
         fetchTeachers();
       } catch (error) {
         console.error("Error deleting teacher:", error);
