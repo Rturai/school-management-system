@@ -9,13 +9,13 @@ const Enrollment = () => {
     name: '', email: '', dob: '', gender: '', className: '', guardianName: '', guardianPhone: '', address: ''
   });
   
-  // Table sheets data states
+  // Table data states
   const [enrollments, setEnrollments] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(true);
 
-  // Live data pull karne ka standard handler
+  // Live data pull karne ka handler
   const fetchEnrollments = () => {
     API.get('/all-enrollments')
       .then(res => {
@@ -41,20 +41,29 @@ const Enrollment = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // ✅ FIXED: Is function ko poori tarah sahi kar diya hai
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
     try {
-      API.post('/enroll', formData)
-      if (response.data.success) {
-        setSubmitted(true);
+      // 1. response variable ko properly catch kiya await ke sath
+      const response = await API.post('/enroll', formData);
+      
+      // 2. Flexible success check lagaya taaki bad response na aaye
+      if (response.status === 200 || response.status === 201 || response.data?.success) {
+        setSubmitted(true); // Isse green success modal khulega!
+        
         // Form inputs khali karein
         setFormData({ name: '', email: '', dob: '', gender: '', className: '', guardianName: '', guardianPhone: '', address: '' });
+        
         // Live data refresh taaki niche instantly naya record dikhe
         fetchEnrollments(); 
+      } else {
+        setErrorMsg("Backend se sahi response nahi mila.");
       }
     } catch (error) {
-      setErrorMsg("Data backend tak nahi ja saka!");
+      console.error("Enrollment error details:", error);
+      setErrorMsg(error.response?.data?.message || "Data backend tak nahi ja saka!");
     }
   };
 
