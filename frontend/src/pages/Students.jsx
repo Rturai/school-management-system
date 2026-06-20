@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import MainLayout from "../layouts/MainLayout";
-import API from "./api";
+import API from "../api";
 const Students = () => {
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
