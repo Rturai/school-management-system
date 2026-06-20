@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../api";
 import MainLayout from "../layouts/MainLayout";
 
 const Classes = () => {
@@ -9,17 +9,18 @@ const Classes = () => {
   const [formData, setFormData] = useState({ className: "", section: "", roomNumber: "", teacherAssigned: "" });
 
   const fetchData = async () => {
-    const classRes = await axios.get("https://school-management-system-ux11.onrender.com/api/classes");
-    const teacherRes = await axios.get("https://school-management-system-ux11.onrender.com/api/teachers");
-    setClasses(classRes.data);
-    setTeachers(teacherRes.data);
-  };
+  const classRes = await API.get("/classes");
+  const teacherRes = await API.get("/teachers");
+
+  setClasses(classRes.data);
+  setTeachers(teacherRes.data);
+};
 
   useEffect(() => { fetchData(); }, []);
 
   const handleSubmit = async () => {
     if(!formData.className || !formData.section) return alert("Fill class name and section!");
-    await axios.post("http://localhost:5000/api/classes", formData);
+    await API.post("/classes", formData);
     fetchData();
     setShowModal(false);
     setFormData({ className: "", section: "", roomNumber: "", teacherAssigned: "" });
@@ -27,7 +28,8 @@ const Classes = () => {
 
   const handleDelete = async (id) => {
     if(window.confirm("Delete this class structure?")) {
-      await axios.delete(`http://localhost:5000/api/classes?id=${id}`);
+      await API.delete(`/classes?id=${id}`);
+    
       fetchData();
     }
   };

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://school-management-system-ux11.onrender.com/api123',
+  baseURL: 'https://school-management-system-ux11.onrender.com/api',
 });
 
 // automatic token aur multipart headers lagane ke liye
